@@ -75328,7 +75328,8 @@ if (utils.device.isIOSOlderThan10(window.navigator.userAgent)) {
 }
 
 // WebVR polyfill
-_dereq_('webvr-polyfill');
+const Polyfill = _dereq_('webvr-polyfill');
+new Polyfill(); // eslint-disable-line
 
 _dereq_('present'); // Polyfill `performance.now()`.
 
@@ -75370,7 +75371,7 @@ _dereq_('./core/a-mixin');
 _dereq_('./extras/components/');
 _dereq_('./extras/primitives/');
 
-console.log('A-Frame Version: 0.7.1 (Date 18-10-2017, Commit #0da6cf4)');
+console.log('A-Frame Version: 0.7.1 (Date 10-10-2018, Commit #5bd4197f)');
 console.log('three Version:', pkg.dependencies['three']);
 console.log('WebVR Polyfill Version:', pkg.dependencies['webvr-polyfill']);
 
@@ -78214,10 +78215,14 @@ THREE.VREffect = function( renderer, onError ) {
 
 	}
 
-	window.addEventListener('vrdisplayconnect', function (evt) { vrDisplay = evt.display; });
+	window.addEventListener('vrdisplayconnect', function (evt) {
+		if ("display" in evt) {
+			vrDisplay = evt.display;
+		}
+	});
 	window.addEventListener('vrdisplaydisconnect', function (evt) {
 		var f;
-		
+
 		scope.exitPresent();
 		// Cancels current request animation frame.
 		f = scope.cancelAnimationFrame();

@@ -24,10 +24,14 @@ THREE.VREffect = function( renderer, onError ) {
 
 	}
 
-	window.addEventListener('vrdisplayconnect', function (evt) { vrDisplay = evt.display; });
+	window.addEventListener('vrdisplayconnect', function (evt) {
+		if ("display" in evt) {
+			vrDisplay = evt.display;
+		}
+	});
 	window.addEventListener('vrdisplaydisconnect', function (evt) {
 		var f;
-		
+
 		scope.exitPresent();
 		// Cancels current request animation frame.
 		f = scope.cancelAnimationFrame();
